@@ -132,7 +132,7 @@ async function loadCommitsInto(t) {
 }
 
 function taskCard(t) {
-  const lastNote = t.history[0] ? t.history[0].note : "";
+  const lastUpdate = t.history.find((h) => h.note !== "作成");
   const tags = t.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
   return `
     <a class="card" href="#/task/${encodeURIComponent(t.id)}">
@@ -144,10 +144,10 @@ function taskCard(t) {
         ${t.project ? `<span class="project">${escapeHtml(t.project)}</span>` : ""}
         ${tags}
       </div>
-      <div class="card-history">
-        <span class="date">${formatDate(t.updatedAt)}</span>
-        <span class="note">${escapeHtml(lastNote)}</span>
-      </div>
+      ${lastUpdate ? `<div class="card-history">
+        <span class="date">${formatDate(lastUpdate.date)}</span>
+        <span class="note">${escapeHtml(lastUpdate.note)}</span>
+      </div>` : ""}
       ${commitsBlockHtml(t)}
     </a>
   `;
@@ -164,9 +164,12 @@ async function renderDetail(id) {
   }
 
   const tags = task.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
-  const historyItems = task.history
-    .map((h) => `<li><span class="date">${formatDate(h.date)}</span><span class="note">${escapeHtml(h.note)}</span></li>`)
-    .join("");
+  const updates = task.history.filter((h) => h.note !== "作成");
+  const historyItems = updates.length
+    ? `<ul class="history-list">${updates
+        .map((h) => `<li><span class="date">${formatDate(h.date)}</span><span class="note">${escapeHtml(h.note)}</span></li>`)
+        .join("")}</ul>`
+    : `<p class="empty">まだ更新履歴がありません</p>`;
 
   app.innerHTML = `
     <section class="task-detail">
@@ -180,7 +183,7 @@ async function renderDetail(id) {
       </div>
 
       <h2 class="history-title">更新履歴</h2>
-      <ul class="history-list">${historyItems}</ul>
+      ${historyItems}
     </section>
   `;
 }
