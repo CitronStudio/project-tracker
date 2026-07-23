@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import StatusBadge from "./StatusBadge";
 import ProjectForm from "./ProjectForm";
-import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { Project, UpdateLog } from "@/lib/types";
 
 export default function ProjectDetail({
@@ -171,9 +170,6 @@ export default function ProjectDetail({
             {logs.map((log) => (
               <li key={log.id} className="border-l-2 border-black/10 dark:border-white/10 pl-3">
                 <div className="flex items-center gap-2 text-xs text-black/40 dark:text-white/40">
-                  <span title={formatDateTime(log.created_at)}>
-                    {formatRelativeTime(log.created_at)}
-                  </span>
                   <span
                     className={`rounded-full px-2 py-0.5 ${
                       log.source === "claude-code"
