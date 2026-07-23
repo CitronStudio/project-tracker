@@ -6,10 +6,17 @@
 <title>プロジェクト管理</title>
 <meta name="description" content="関わっている案件・プロジェクトの進捗を管理する静的サイト">
 <link rel="stylesheet" href="css/style.css">
+<script>
+(function () {
+  var t = localStorage.getItem("project-tracker/theme");
+  if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+})();
+</script>
 </head>
 <body>
 <header class="app-header">
   <h1>プロジェクト管理</h1>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="ダークモード切替">🌓</button>
 </header>
 
 <main id="app"></main>
@@ -20,6 +27,7 @@
 
 <script src="js/config.js"></script>
 <script src="js/data.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
