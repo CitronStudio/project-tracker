@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Project Tracker",
+  description: "自分が関わっているプロジェクトの進捗と更新履歴を管理する",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="ja" className="h-full antialiased">
+      <body className="min-h-full flex flex-col">
+        <header className="border-b border-black/10 dark:border-white/10">
+          <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <Link href="/" className="font-bold text-lg">
+              Project Tracker
+            </Link>
+            <Link
+              href="/projects/new"
+              className="rounded-md bg-black text-white dark:bg-white dark:text-black px-3 py-1.5 text-sm font-medium"
+            >
+              + 新規プロジェクト
+            </Link>
+          </div>
+        </header>
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-6">{children}</main>
+      </body>
+    </html>
+  );
+}
