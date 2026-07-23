@@ -18,6 +18,12 @@ function statusBadge(status) {
   return `<span class="badge" style="--badge-color:${color}">${escapeHtml(status)}</span>`;
 }
 
+// history は先頭が最新（新しい変更をunshiftで追加）なので、"作成"以外で最初に
+// 見つかったものが直近の実更新。無ければ null（＝まだ更新なし）。
+function lastRealUpdate(t) {
+  return t.history.find((h) => h.note !== "作成") || null;
+}
+
 async function route() {
   const hash = location.hash.replace(/^#/, "") || "/";
   updateNavHighlight(hash);
@@ -59,7 +65,15 @@ async function renderList() {
     return true;
   });
 
-  filtered.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+  // 更新時間の降順。実更新がないタスクは日時を問わず末尾に置く。
+  filtered.sort((a, b) => {
+    const ua = lastRealUpdate(a);
+    const ub = lastRealUpdate(b);
+    if (!ua && !ub) return 0;
+    if (!ua) return 1;
+    if (!ub) return -1;
+    return ua.date < ub.date ? 1 : ua.date > ub.date ? -1 : 0;
+  });
 
   const statusTabs = ["", ...CONFIG.STATUSES]
     .map((s) => {
@@ -132,7 +146,7 @@ async function loadCommitsInto(t) {
 }
 
 function taskCard(t) {
-  const lastUpdate = t.history.find((h) => h.note !== "作成");
+  const lastUpdate = lastRealUpdate(t);
   const tags = t.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
   return `
     <a class="card" href="#/task/${encodeURIComponent(t.id)}">
