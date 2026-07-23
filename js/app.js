@@ -76,7 +76,7 @@ async function renderList() {
     .join("");
 
   const cards = filtered.length
-    ? filtered.map((t) => taskCard(t) + commitsBlockHtml(t)).join("")
+    ? filtered.map(taskCard).join("")
     : `<p class="empty">該当するタスクがありません</p>`;
 
   app.innerHTML = `
@@ -148,6 +148,7 @@ function taskCard(t) {
         <span class="date">${formatDate(t.updatedAt)}</span>
         <span class="note">${escapeHtml(lastNote)}</span>
       </div>
+      ${commitsBlockHtml(t)}
     </a>
   `;
 }
