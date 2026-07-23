@@ -76,7 +76,7 @@ async function renderList() {
     .join("");
 
   const cards = filtered.length
-    ? filtered.map(taskCard).join("")
+    ? filtered.map((t) => taskCard(t) + commitsBlockHtml(t)).join("")
     : `<p class="empty">該当するタスクがありません</p>`;
 
   app.innerHTML = `
@@ -104,6 +104,31 @@ async function renderList() {
     history.replaceState(null, "", `#/?${p.toString()}`);
     renderList();
   });
+
+  filtered
+    .filter((t) => t.repo)
+    .forEach((t) => loadCommitsInto(t));
+}
+
+// ---------- タスクに紐づくリポジトリの最新コミット ----------
+function commitsBlockHtml(t) {
+  if (!t.repo) return "";
+  return `<div class="commits-block" id="commits-${t.id}"><p class="empty small">コミット読み込み中…</p></div>`;
+}
+
+async function loadCommitsInto(t) {
+  const el = document.getElementById(`commits-${t.id}`);
+  if (!el) return;
+  try {
+    const commits = await loadRecentCommits(t.repo, 3);
+    el.innerHTML = commits.length
+      ? `<ul class="commit-list">${commits
+          .map((c) => `<li><span class="date">${formatDate(c.date)}</span><span class="msg">${escapeHtml(c.message)}</span></li>`)
+          .join("")}</ul>`
+      : `<p class="empty small">コミットがありません</p>`;
+  } catch (e) {
+    el.innerHTML = `<p class="empty small">コミット履歴を取得できませんでした</p>`;
+  }
 }
 
 function taskCard(t) {

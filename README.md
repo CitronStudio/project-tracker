@@ -21,6 +21,7 @@
     "id": "一意なID",
     "title": "タスク名",
     "project": "プロジェクト名（例: りさだむ杯ポータル）",
+    "repo": "owner/repo（省略可。公開GitHubリポジトリなら一覧に最新コミット3件を自動表示）",
     "tags": ["タグ1", "タグ2"],
     "status": "未着手 | 進行中 | 完了",
     "createdAt": "ISO日時",
@@ -34,6 +35,8 @@
 
 `history` は新しい変更を先頭（unshift）に追加する。
 
+`repo` を指定したタスクは、一覧のカード下にGitHub APIから取得した最新コミット3件（日時・コミットメッセージ1行目）を表示する。ページを開くたびに直接GitHub APIを叩くため、コミットが増えれば自動で反映される（ビルドや手動更新は不要）。公開リポジトリのみ対応。
+
 ## ファイル構成
 
 ```
@@ -41,6 +44,7 @@ index.html      エントリーポイント
 css/style.css   スタイル一式（モバイルファースト、ダークモード対応）
 js/config.js    ステータス一覧・配色・データURLなどの設定
 js/data.js      data/tasks.json を fetch するだけの読み取り層
+js/commits.js   task.repo に紐づくGitHubリポジトリの最新コミットを取得
 js/app.js       ハッシュルーティングと画面描画（読み取り専用）
 data/tasks.json タスクデータ本体（Claude Codeが編集・コミットする）
 CLAUDE.md       Claude Code向けの運用ルール
