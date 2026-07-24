@@ -2,6 +2,7 @@
   {
     "id": "1785086005000-a1b2c3",
     "title": "りさだむ杯HP",
+    "type": "task",
     "project": "りさだむ杯",
     "repo": "CitronStudio/risadamu-cup-portal",
     "tags": [],
@@ -16,6 +17,7 @@
   {
     "id": "1785086005001-d4e5f6",
     "title": "wilberryライブ情報自動更新",
+    "type": "task",
     "project": "wilberry",
     "tags": [],
     "status": "進行中",
@@ -31,6 +33,7 @@
   {
     "id": "1785086005002-g7h8i9",
     "title": "家計簿分析システム",
+    "type": "task",
     "project": "家計簿",
     "tags": [],
     "status": "進行中",
@@ -46,6 +49,7 @@
   {
     "id": "1785086005003-j1k2l3",
     "title": "タスク管理自動化",
+    "type": "task",
     "project": "project-tracker",
     "repo": "CitronStudio/project-tracker",
     "tags": [],
@@ -60,6 +64,7 @@
   {
     "id": "1785086005004-m4n5o6",
     "title": "フライヤー文字情報ツール",
+    "type": "task",
     "project": "wilberry",
     "tags": [],
     "status": "完了",
@@ -69,6 +74,19 @@
       { "date": "2026-07-19T11:55:00.000Z", "note": "完成。generate.py（Pillow + Noto Sans JP可変フォント）で、テキストのライブ情報を2048×2048・白地黒文字のフォーマット画像に自動変換。日付/曜日/時刻/料金/引用符の変換ルール、出演者リストの自動折返し・中央揃え、上下余白を確定" },
       { "date": "2026-07-19T11:29:00.000Z", "note": "既存のサンプル画像と実際のライブ情報の文面をもとに変換ルールをヒアリングし、着手" },
       { "date": "2026-07-23T13:13:25.000Z", "note": "作成" }
+    ]
+  },
+  {
+    "id": "1785196525000-p7q8r9",
+    "title": "WordPressログイン問題",
+    "type": "incident",
+    "project": "wilberry",
+    "tags": [],
+    "status": "未着手",
+    "createdAt": "2026-07-25T00:00:00.000Z",
+    "updatedAt": "2026-07-25T00:00:00.000Z",
+    "history": [
+      { "date": "2026-07-25T00:00:00.000Z", "note": "作成" }
     ]
   }
 ]

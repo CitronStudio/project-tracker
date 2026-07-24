@@ -18,6 +18,11 @@ function statusBadge(status) {
   return `<span class="badge" style="--badge-color:${color}">${escapeHtml(status)}</span>`;
 }
 
+// タスク名（緑）／障害名（赤）の分類。typeが無い既存データは "task" 扱い。
+function titleClass(t) {
+  return t.type === "incident" ? "title-incident" : "title-task";
+}
+
 // history は先頭が最新（新しい変更をunshiftで追加）なので、"作成"以外で最初に
 // 見つかったものが直近の実更新。無ければ null（＝まだ更新なし）。
 function lastRealUpdate(t) {
@@ -177,7 +182,7 @@ function taskCard(t, commits) {
   return `
     <a class="card" href="#/task/${encodeURIComponent(t.id)}">
       <div class="card-top">
-        <span class="title">${escapeHtml(t.title)}</span>
+        <span class="title ${titleClass(t)}">${escapeHtml(t.title)}</span>
         ${statusBadge(t.status)}
       </div>
       <div class="card-meta">
@@ -230,7 +235,7 @@ async function renderDetail(id) {
   app.innerHTML = `
     <section class="task-detail">
       <div class="detail-header">
-        <h2>${escapeHtml(task.title)}</h2>
+        <h2 class="${titleClass(task)}">${escapeHtml(task.title)}</h2>
         ${statusBadge(task.status)}
       </div>
       <div class="card-meta">

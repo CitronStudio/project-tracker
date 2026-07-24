@@ -20,6 +20,7 @@
   {
     "id": "一意なID",
     "title": "タスク名",
+    "type": "task | incident（省略可。既定はtask。taskは緑文字、incidentは赤文字でタイトル表示）",
     "project": "プロジェクト名（例: りさだむ杯ポータル）",
     "repo": "owner/repo（省略可。公開GitHubリポジトリなら一覧に最新コミット3件を自動表示）",
     "tags": ["タグ1", "タグ2"],
