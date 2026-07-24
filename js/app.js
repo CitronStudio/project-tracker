@@ -189,6 +189,31 @@ function taskCard(t, commits) {
   `;
 }
 
+function manualHistoryHtml(task) {
+  const updates = task.history.filter((h) => h.note !== "作成");
+  return updates.length
+    ? `<ul class="history-list">${updates
+        .map((h) => `<li><span class="date">${formatDate(h.date)}</span><span class="note">${escapeHtml(h.note)}</span></li>`)
+        .join("")}</ul>`
+    : `<p class="empty">まだ更新履歴がありません</p>`;
+}
+
+// repo連携タスクは、詳細ページの更新履歴をそのリポジトリの全コミットで構成する
+// （一覧カードでは引き続き最新3件のみ表示）。
+async function repoHistoryHtml(repo) {
+  let commits;
+  try {
+    commits = await loadAllCommits(repo);
+  } catch (e) {
+    commits = null;
+  }
+  if (commits === null) return `<p class="empty">コミット履歴を取得できませんでした</p>`;
+  if (!commits.length) return `<p class="empty">コミットがありません</p>`;
+  return `<ul class="history-list">${commits
+    .map((c) => `<li><span class="date">${formatDate(c.date)}</span><span class="note">${escapeHtml(c.message)}</span></li>`)
+    .join("")}</ul>`;
+}
+
 // ---------- 詳細（読み取り専用） ----------
 async function renderDetail(id) {
   app.innerHTML = `<p class="empty">読み込み中…</p>`;
@@ -200,12 +225,7 @@ async function renderDetail(id) {
   }
 
   const tags = task.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
-  const updates = task.history.filter((h) => h.note !== "作成");
-  const historyItems = updates.length
-    ? `<ul class="history-list">${updates
-        .map((h) => `<li><span class="date">${formatDate(h.date)}</span><span class="note">${escapeHtml(h.note)}</span></li>`)
-        .join("")}</ul>`
-    : `<p class="empty">まだ更新履歴がありません</p>`;
+  const historyItems = task.repo ? await repoHistoryHtml(task.repo) : manualHistoryHtml(task);
 
   app.innerHTML = `
     <section class="task-detail">
