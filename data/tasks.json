@@ -5,10 +5,11 @@
     "project": "りさだむ杯",
     "repo": "CitronStudio/risadamu-cup-portal",
     "tags": [],
-    "status": "未着手",
+    "status": "進行中",
     "createdAt": "2026-07-23T13:13:25.000Z",
-    "updatedAt": "2026-07-23T13:13:25.000Z",
+    "updatedAt": "2026-07-24T10:53:21.000Z",
     "history": [
+      { "date": "2026-07-24T10:53:21.000Z", "note": "リポジトリ側で更新が進んでいるため、ステータスを「進行中」に変更" },
       { "date": "2026-07-23T13:13:25.000Z", "note": "作成" }
     ]
   },
@@ -47,10 +48,11 @@
     "project": "project-tracker",
     "repo": "CitronStudio/project-tracker",
     "tags": [],
-    "status": "未着手",
+    "status": "進行中",
     "createdAt": "2026-07-23T13:13:25.000Z",
-    "updatedAt": "2026-07-23T13:13:25.000Z",
+    "updatedAt": "2026-07-24T10:53:21.000Z",
     "history": [
+      { "date": "2026-07-24T10:53:21.000Z", "note": "リポジトリ側で更新が進んでいるため、ステータスを「進行中」に変更" },
       { "date": "2026-07-23T13:13:25.000Z", "note": "作成" }
     ]
   },
