@@ -24,6 +24,27 @@ function lastRealUpdate(t) {
   return t.history.find((h) => h.note !== "作成") || null;
 }
 
+// リポジトリの最新コミットは同一ページ滞在中はキャッシュし、フィルタ操作の
+// たびにGitHub APIを叩き直さないようにする（ページを開き直せば最新が取れる）。
+const commitsCache = new Map();
+async function getCommits(repo) {
+  if (commitsCache.has(repo)) return commitsCache.get(repo);
+  const promise = loadRecentCommits(repo, 3).catch(() => null);
+  commitsCache.set(repo, promise);
+  return promise;
+}
+
+// タスクの並び替えに使う「直近の活動日時」。history上の実更新と、
+// 連携リポジトリの最新コミット日時のうち、より新しい方を採用する。
+function latestActivityDate(t, commits) {
+  const dates = [];
+  const update = lastRealUpdate(t);
+  if (update) dates.push(update.date);
+  if (commits && commits.length) dates.push(commits[0].date);
+  if (!dates.length) return null;
+  return dates.reduce((max, d) => (d > max ? d : max));
+}
+
 async function route() {
   const hash = location.hash.replace(/^#/, "") || "/";
   updateNavHighlight(hash);
@@ -65,14 +86,25 @@ async function renderList() {
     return true;
   });
 
-  // 更新時間の降順。実更新がないタスクは日時を問わず末尾に置く。
+  // 並び替え・カード表示のため、連携リポジトリの最新コミットを先に取得する。
+  const commitsByTaskId = {};
+  await Promise.all(
+    filtered
+      .filter((t) => t.repo)
+      .map(async (t) => {
+        commitsByTaskId[t.id] = await getCommits(t.repo);
+      })
+  );
+
+  // 更新時間の降順（history上の更新・連携リポジトリのコミットいずれか新しい方）。
+  // 実更新がないタスクは日時を問わず末尾に置く。
   filtered.sort((a, b) => {
-    const ua = lastRealUpdate(a);
-    const ub = lastRealUpdate(b);
-    if (!ua && !ub) return 0;
-    if (!ua) return 1;
-    if (!ub) return -1;
-    return ua.date < ub.date ? 1 : ua.date > ub.date ? -1 : 0;
+    const da = latestActivityDate(a, commitsByTaskId[a.id]);
+    const db = latestActivityDate(b, commitsByTaskId[b.id]);
+    if (!da && !db) return 0;
+    if (!da) return 1;
+    if (!db) return -1;
+    return da < db ? 1 : da > db ? -1 : 0;
   });
 
   const statusTabs = ["", ...CONFIG.STATUSES]
@@ -90,7 +122,7 @@ async function renderList() {
     .join("");
 
   const cards = filtered.length
-    ? filtered.map(taskCard).join("")
+    ? filtered.map((t) => taskCard(t, commitsByTaskId[t.id])).join("")
     : `<p class="empty">該当するタスクがありません</p>`;
 
   app.innerHTML = `
@@ -118,34 +150,23 @@ async function renderList() {
     history.replaceState(null, "", `#/?${p.toString()}`);
     renderList();
   });
-
-  filtered
-    .filter((t) => t.repo)
-    .forEach((t) => loadCommitsInto(t));
 }
 
 // ---------- タスクに紐づくリポジトリの最新コミット ----------
-function commitsBlockHtml(t) {
+function commitsBlockHtml(t, commits) {
   if (!t.repo) return "";
-  return `<div class="commits-block" id="commits-${t.id}"><p class="empty small">コミット読み込み中…</p></div>`;
-}
-
-async function loadCommitsInto(t) {
-  const el = document.getElementById(`commits-${t.id}`);
-  if (!el) return;
-  try {
-    const commits = await loadRecentCommits(t.repo, 3);
-    el.innerHTML = commits.length
-      ? `<ul class="commit-list">${commits
-          .map((c) => `<li><span class="date">${formatDate(c.date)}</span><span class="msg">${escapeHtml(c.message)}</span></li>`)
-          .join("")}</ul>`
-      : `<p class="empty small">コミットがありません</p>`;
-  } catch (e) {
-    el.innerHTML = `<p class="empty small">コミット履歴を取得できませんでした</p>`;
+  if (commits === null) {
+    return `<div class="commits-block"><p class="empty small">コミット履歴を取得できませんでした</p></div>`;
   }
+  if (!commits.length) {
+    return `<div class="commits-block"><p class="empty small">コミットがありません</p></div>`;
+  }
+  return `<div class="commits-block"><ul class="commit-list">${commits
+    .map((c) => `<li><span class="date">${formatDate(c.date)}</span><span class="msg">${escapeHtml(c.message)}</span></li>`)
+    .join("")}</ul></div>`;
 }
 
-function taskCard(t) {
+function taskCard(t, commits) {
   const lastUpdate = lastRealUpdate(t);
   const tags = t.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
   return `
@@ -162,7 +183,7 @@ function taskCard(t) {
         <span class="date">${formatDate(lastUpdate.date)}</span>
         <span class="note">${escapeHtml(lastUpdate.note)}</span>
       </div>` : ""}
-      ${commitsBlockHtml(t)}
+      ${commitsBlockHtml(t, commits)}
     </a>
   `;
 }
