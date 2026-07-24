@@ -166,8 +166,13 @@ function commitsBlockHtml(t, commits) {
     .join("")}</ul></div>`;
 }
 
-function taskCard(t, commits) {
+function lastUpdateBlockHtml(t) {
   const lastUpdate = lastRealUpdate(t);
+  if (!lastUpdate) return "";
+  return `<div class="commits-block"><ul class="commit-list"><li><span class="date">${formatDate(lastUpdate.date)}</span><span class="msg">${escapeHtml(lastUpdate.note)}</span></li></ul></div>`;
+}
+
+function taskCard(t, commits) {
   const tags = t.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
   return `
     <a class="card" href="#/task/${encodeURIComponent(t.id)}">
@@ -179,11 +184,7 @@ function taskCard(t, commits) {
         ${t.project ? `<span class="project">${escapeHtml(t.project)}</span>` : ""}
         ${tags}
       </div>
-      ${lastUpdate ? `<div class="card-history">
-        <span class="date">${formatDate(lastUpdate.date)}</span>
-        <span class="note">${escapeHtml(lastUpdate.note)}</span>
-      </div>` : ""}
-      ${commitsBlockHtml(t, commits)}
+      ${t.repo ? commitsBlockHtml(t, commits) : lastUpdateBlockHtml(t)}
     </a>
   `;
 }

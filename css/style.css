@@ -141,9 +141,6 @@ main { max-width: 640px; margin: 0 auto; padding: 12px; }
   padding: 2px 8px;
   color: var(--text-sub);
 }
-.card-history { margin-top: 8px; display: flex; gap: 8px; font-size: 0.8rem; color: var(--text-sub); }
-.card-history .note { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
 .badge {
   --badge-color: #9aa0a6;
   font-size: 0.75rem;
