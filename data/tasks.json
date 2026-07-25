@@ -77,6 +77,20 @@
     ]
   },
   {
+    "id": "1784957805000-83827d",
+    "title": "wilberry HP整理",
+    "type": "task",
+    "project": "wilberry",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-07-25T05:36:05.000Z",
+    "updatedAt": "2026-07-25T05:36:05.000Z",
+    "history": [
+      { "date": "2026-07-25T05:36:05.000Z", "note": "公開ページから調査開始。テーマはCreedence（バンド向け、v7.0.2）、同梱プラグインとしてWPBakery Page Builder（js_composer 6.10.0、最新は8系）とRevolution Slider（revslider 6.6.12、最新は6.7.57/7系）を確認、いずれも要更新。他にContact Form 7・Google Site Kit・Duplicate Postが稼働中。2014年メモにあったTablePress・Social Bookmarking Light・Akismet等の旧構成の残骸が残っているかはwp-adminのプラグイン一覧を見ないと判断できず、次のステップとして保留中" },
+      { "date": "2026-07-25T05:36:05.000Z", "note": "作成" }
+    ]
+  },
+  {
     "id": "1785196525000-p7q8r9",
     "title": "WordPressログイン問題",
     "type": "incident",
