@@ -84,8 +84,9 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-07-25T05:36:05.000Z",
-    "updatedAt": "2026-07-25T05:36:05.000Z",
+    "updatedAt": "2026-07-25T05:49:40.000Z",
     "history": [
+      { "date": "2026-07-25T05:49:40.000Z", "note": "wp-adminにログインしプラグイン一覧・更新画面・コメント欄を確認。全11プラグイン中8有効/3停止中。WP本体7.0.2とテーマCreedenceはいずれも最新版。更新可能: Contact Form7(6.1.5→6.1.6)・Site Kit(1.178.0→1.183.0)・Yoast Duplicate Post(4.6→4.7)は互換性確認済み、WPBakery(6.10.0→8.7.4)は大型アップデートで互換性未確認のため要注意、Revolution Slider(6.6.12→6.7.58)は手動更新が必要。停止中プラグインはAkismet（スパム対策が無効な状態）・Creedence Instagram Feed（テーマは有効化を推奨）・Hello Dolly（実用性なし、削除可）。承認待ちコメント1件は明らかなスパムと判明、かつ承認済み47件中46件がAkismet無効のまま通っており要確認。次のアクションはユーザーの承認待ち" },
       { "date": "2026-07-25T05:36:05.000Z", "note": "公開ページから調査開始。テーマはCreedence（バンド向け、v7.0.2）、同梱プラグインとしてWPBakery Page Builder（js_composer 6.10.0、最新は8系）とRevolution Slider（revslider 6.6.12、最新は6.7.57/7系）を確認、いずれも要更新。他にContact Form 7・Google Site Kit・Duplicate Postが稼働中。2014年メモにあったTablePress・Social Bookmarking Light・Akismet等の旧構成の残骸が残っているかはwp-adminのプラグイン一覧を見ないと判断できず、次のステップとして保留中" },
       { "date": "2026-07-25T05:36:05.000Z", "note": "作成" }
     ]
