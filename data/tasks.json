@@ -94,6 +94,21 @@
     ]
   },
   {
+    "id": "1785143527347-comfyui1",
+    "title": "ComfyUI構築",
+    "type": "task",
+    "project": "画像・動画生成",
+    "tags": [],
+    "status": "完了",
+    "createdAt": "2026-07-27T09:12:01.000Z",
+    "updatedAt": "2026-07-27T09:12:01.000Z",
+    "history": [
+      { "date": "2026-07-27T09:12:01.000Z", "note": "完了。ComfyUI（C:\\Stable_Diffusion\\ComfyUI）を新規構築し、LTX-Video 2B distilled fp8モデルで720p相当(1280x704)・8秒・24fpsの動画を約104秒で生成できることを確認。RTX 4060 Ti 8GB・RAM16GBの環境向けにVRAM節約設定（--lowvram）とfp8量子化モデルを採用。Flux用にダウンロード済みだったT5テキストエンコーダをハードリンクで再利用しダウンロード量を節約。ffmpeg・RIFE（フレーム補間）もツールとして導入済み" },
+      { "date": "2026-07-27T09:12:01.000Z", "note": "当初はお使いのStable Diffusion Forge（C:\\Stable_Diffusion\\stable-diffusion-webui-forge）にAnimateDiff拡張を追加する方針で着手したが、Forge本体が2025年3月に独自backendへ刷新されており、AnimateDiff拡張（開発が2024年3月で停止）と根本的に非互換と判明。複数のブランチ・コミットの組み合わせを試したが解決せず、ComfyUI併設の方針に転換" },
+      { "date": "2026-07-27T09:12:01.000Z", "note": "作成。目的はStable Diffusion系ツールで8秒・720pの動画を生成できる環境を構築すること" }
+    ]
+  },
+  {
     "id": "1785196525000-p7q8r9",
     "title": "WordPressログイン問題",
     "type": "incident",
