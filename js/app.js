@@ -251,3 +251,10 @@ async function renderDetail(id) {
 
 window.addEventListener("hashchange", route);
 window.addEventListener("load", route);
+
+// タイトルタップで一覧に戻りつつ、ブラウザを再読み込みして最新情報を取得する。
+document.getElementById("app-title").addEventListener("click", (e) => {
+  e.preventDefault();
+  location.hash = "/";
+  location.reload();
+});
