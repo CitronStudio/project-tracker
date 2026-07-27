@@ -103,8 +103,10 @@
     "tags": [],
     "status": "完了",
     "createdAt": "2026-07-27T09:12:01.000Z",
-    "updatedAt": "2026-07-27T09:12:01.000Z",
+    "updatedAt": "2026-07-27T14:23:54.000Z",
     "history": [
+      { "date": "2026-07-27T14:23:54.000Z", "note": "画像編集ワークフローを追加。Flux Kontext devで「正面向き→横向き」のような視点変更・ポーズ編集ができる画像→画像ワークフロー(flux_kontext_pose_edit)を構築。当初使ったfp8_scaled版モデルはComfyUIとの非互換で生成結果が完全なノイズになる不具合があり(VAE単体は正常動作することから原因を特定)、GGUF量子化版(Q4_K_M, 6.9GB)に切り替えて解決。壊れていたfp8版(11.9GB)は削除済み" },
+      { "date": "2026-07-27T14:23:54.000Z", "note": "画像→動画(I2V)ワークフロー(ltxv_image_to_video)を追加。起動方法・ファイル置き場所・調整のヒントをまとめた操作ガイドPPT（C:\\Stable_Diffusion\\ComfyUI動画生成ガイド.pptx）を作成。run_comfyui.batの文字コード起因の不具合（日本語コメント追加で文字化けし起動失敗）も修正済み" },
       { "date": "2026-07-27T09:12:01.000Z", "note": "完了。ComfyUI（C:\\Stable_Diffusion\\ComfyUI）を新規構築し、LTX-Video 2B distilled fp8モデルで720p相当(1280x704)・8秒・24fpsの動画を約104秒で生成できることを確認。RTX 4060 Ti 8GB・RAM16GBの環境向けにVRAM節約設定（--lowvram）とfp8量子化モデルを採用。Flux用にダウンロード済みだったT5テキストエンコーダをハードリンクで再利用しダウンロード量を節約。ffmpeg・RIFE（フレーム補間）もツールとして導入済み" },
       { "date": "2026-07-27T09:12:01.000Z", "note": "当初はお使いのStable Diffusion Forge（C:\\Stable_Diffusion\\stable-diffusion-webui-forge）にAnimateDiff拡張を追加する方針で着手したが、Forge本体が2025年3月に独自backendへ刷新されており、AnimateDiff拡張（開発が2024年3月で停止）と根本的に非互換と判明。複数のブランチ・コミットの組み合わせを試したが解決せず、ComfyUI併設の方針に転換" },
       { "date": "2026-07-27T09:12:01.000Z", "note": "作成。目的はStable Diffusion系ツールで8秒・720pの動画を生成できる環境を構築すること" }
