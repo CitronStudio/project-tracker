@@ -169,8 +169,9 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-03T06:30:00.000Z",
-    "updatedAt": "2026-08-03T06:30:00.000Z",
+    "updatedAt": "2026-08-03T08:45:00.000Z",
     "history": [
+      { "date": "2026-08-03T08:45:00.000Z", "note": "Photo_enhance_2400_v2に「Kontext精密化ステージ」（⑤〜⑧、node30〜49）を追加。SeedVR2出力(A)をKontextで「姿勢・表情・構図は変えず画質だけ上げる」指示(FluxGuidance 1.5)で再生成し、flux_kontext_pose_editと同じESRGAN後処理をかける。旧flux_kontext_pose_editで姿勢を変えた際(B)に見られた髪の質感・肌のキメの向上を、姿勢を変えずに再現できることを確認。従来のSeedVR2単体出力(⑦)は新ステージと独立した分岐として残しており、⑤〜⑧をCtrl+Bでバイパスすれば追加前の状態に完全に戻る設計。生画像からの通しテストでも1792x2400で正常動作を確認済み" },
       { "date": "2026-08-03T06:30:00.000Z", "note": "ワークフロー Photo_enhance_2400_v2 が完成。人物写真を元サイズ問わず1792x2400へアップコンバートする。構成は LoadImage → ImageBlur → SeedVR2 → ImageScale → SaveImage の7ノードのみで、プロンプトもdenoiseも無いため構図・服装・髪型・ポーズ・表情が原理的に変わらない。所要30〜60秒/枚。旧版で顔だけ切り出して合成していた手動座標調整も不要になった" },
       { "date": "2026-08-03T06:20:00.000Z", "note": "出力に乗る粒状ノイズの原因を特定。SeedVR2が「元画像のJPEGブロックノイズも忠実に拡大する」ことが原因で、モデル・量子化・入力解像度・VAEタイリング・カラー補正のいずれも無関係だった（リポジトリ付属のクリーンなサンプル画像では完璧な結果が出ることで切り分け）。前段に軽いガウシアンブラー（radius 2 / sigma 1.0）を入れて圧縮ノイズだけ潰す対策で解消。sigma 1.6以上は肌がプラスチック化するため不可" },
       { "date": "2026-08-03T06:00:00.000Z", "note": "SeedVR2（numz/ComfyUI-SeedVR2_VideoUpscaler）を導入。RTX 4060 Ti 8GB / torch 2.5.1 / Python 3.10 という推奨より古い環境でも動作した。7B sharp Q4_K_M を blocks_to_swap 36 + swap_io_components ON + VAEタイリングONで運用。VAEタイリングをOFFにすると1792x2400の段階で確実にOOMする" },
