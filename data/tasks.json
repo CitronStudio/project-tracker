@@ -171,6 +171,19 @@
     ]
   },
   {
+    "id": "1785863873481-skillsheet1",
+    "title": "歴代制作物まとめ",
+    "type": "task",
+    "project": "キャリア",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-08-03T17:17:53.481Z",
+    "updatedAt": "2026-08-03T17:17:53.481Z",
+    "history": [
+      { "date": "2026-08-03T17:17:53.481Z", "note": "作成。目的は、これまで作成したExcel/VBA/Pythonの制作物（C:\\Users\\tak_m\\.claude\\For_Skillsheet_1 に集約）を分析し、転職・副業のエントリーシートや照会文に流用できるPowerPoint形式の解説資料（スキルシート）を作成すること" }
+    ]
+  },
+  {
     "id": "1785738000000-upscaler1",
     "title": "ComfyUI アップスケーラー構築",
     "type": "task",
