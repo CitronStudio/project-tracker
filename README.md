@@ -59,6 +59,16 @@ python3 -m http.server 8000
 
 その後ブラウザで `http://localhost:8000/` を開く。
 
+## data/tasks.json のバリデーション
+
+`data/tasks.json` はコミット前に以下で構文・必須フィールドをチェックできる（`main`へのpush時にも
+GitHub Actionsで自動実行される。JSONが壊れているとサイトが「取得に失敗して何も表示されない」
+状態になるため、壊れていないかにすぐ気づけるようにする目的）。
+
+```
+python3 scripts/validate_tasks_json.py data/tasks.json
+```
+
 ## 公開（GitHub Pages）
 
 リポジトリの Settings → Pages で「Deploy from a branch」→ ブランチ `main` / フォルダ `/ (root)` を選べば公開できる。

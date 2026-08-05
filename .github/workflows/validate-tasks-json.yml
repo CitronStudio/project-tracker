@@ -1,0 +1,15 @@
+name: Validate data/tasks.json
+
+on:
+  push:
+    paths:
+      - "data/tasks.json"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON syntax and required fields
+        run: python3 scripts/validate_tasks_json.py data/tasks.json
