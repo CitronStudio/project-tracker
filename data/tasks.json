@@ -210,5 +210,19 @@
       { "date": "2026-08-03T05:00:00.000Z", "note": "方式を決定。当初は手持ちのSDXL資産（RealVisXL + Ultimate SD Upscale + ESRGAN）で組んだが、低解像度JPEGが元だとdenoiseを上げないとディテールが出ず、上げると顔が別人化するトレードオフから抜けられず断念。参考資料のリンクを実地検証したうえで、生成系ではなく復元専用モデルのSeedVR2に方針転換した" },
       { "date": "2026-08-03T04:30:00.000Z", "note": "作成。旧ワークフロー Photo_enhance_2400 の仕上がり不良を受けて作り直し。要件は「人物写真を元サイズ問わず縦2400×横1792へアップコンバート」「縦横比を変えない」「肌は本物の人間らしさを保つ」「服装・髪型・ポーズ・表情・構図を変えない」「Flux Kontextは使わない（余計な情報が入り別物になるため）」" }
     ]
+  },
+  {
+    "id": "1786020000000-minimax3",
+    "title": "Minimix-H3 構築",
+    "type": "task",
+    "project": "画像・動画生成",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-08-06T12:40:00.000Z",
+    "updatedAt": "2026-08-06T12:40:00.000Z",
+    "history": [
+      { "date": "2026-08-06T12:40:00.000Z", "note": "ComfyUIを0.28.0→0.30.2に更新（v0.30.2タグにpin。pip --upgradeでtorchがCPU版に壊れる事故が発生し、cu130ビルドに手動修復）。Comfy-Org/MiniMax-H3から公式量子化モデル一式（diffusion_models/text_encoders/vae、計約42.5GB）をダウンロード配置（aria2はHuggingFaceのXetストレージと相性が悪く403エラーになったため hf CLI に切替）。ComfyUI公式テンプレート(video_minimax_h3_i2v)がモデルファイル名と完全一致することを確認し、API経由で本番相当設定（640x640・5秒・20ステップ）の生成に成功。RTX 4060 Ti 8GB（元記事の3060 12GBよりVRAM少）でもDynamic VRAM offloadで問題なく動作し、モデルロード済み状態から約8分34秒（SageAttention/Triton未導入のため元記事の5分19秒より遅め、導入で高速化余地あり）。副次的に、ComfyUIコア更新に伴いComfyUI-LTXVideoカスタムノードでimportエラーが発生し、一時「既存のLTX Video(2B)ワークフローが壊れた」と誤判断したが、実機テストで旧ltxv-2b-0.9.8-distilled-fp8.safetensorsによるT2V/I2Vとも生成成功を確認でき誤りと判明（実際に壊れていたのは未使用の上級者向けtricksノードのみで、既存7ワークフローは全て無事）" },
+      { "date": "2026-08-06T12:35:00.000Z", "note": "作成。X(旧Twitter)の投稿「RTX3060 12GBでMiniMax-H3を動かした」を参考に、同様のText-to-Video/Image-to-Video環境をComfyUIに構築できるか検証・構築することが目的" }
+    ]
   }
 ]
