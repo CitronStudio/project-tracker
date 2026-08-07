@@ -214,7 +214,7 @@
   },
   {
     "id": "1786020000000-minimax3",
-    "title": "Minimix-H3 構築",
+    "title": "Minimax-H3 構築",
     "type": "task",
     "project": "画像・動画生成",
     "tags": [],
