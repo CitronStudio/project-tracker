@@ -228,5 +228,19 @@
       { "date": "2026-08-06T12:40:00.000Z", "note": "ComfyUIを0.28.0→0.30.2に更新（v0.30.2タグにpin。pip --upgradeでtorchがCPU版に壊れる事故が発生し、cu130ビルドに手動修復）。Comfy-Org/MiniMax-H3から公式量子化モデル一式（diffusion_models/text_encoders/vae、計約42.5GB）をダウンロード配置（aria2はHuggingFaceのXetストレージと相性が悪く403エラーになったため hf CLI に切替）。ComfyUI公式テンプレート(video_minimax_h3_i2v)がモデルファイル名と完全一致することを確認し、API経由で本番相当設定（640x640・5秒・20ステップ）の生成に成功。RTX 4060 Ti 8GB（元記事の3060 12GBよりVRAM少）でもDynamic VRAM offloadで問題なく動作し、モデルロード済み状態から約8分34秒（SageAttention/Triton未導入のため元記事の5分19秒より遅め、導入で高速化余地あり）。副次的に、ComfyUIコア更新に伴いComfyUI-LTXVideoカスタムノードでimportエラーが発生し、一時「既存のLTX Video(2B)ワークフローが壊れた」と誤判断したが、実機テストで旧ltxv-2b-0.9.8-distilled-fp8.safetensorsによるT2V/I2Vとも生成成功を確認でき誤りと判明（実際に壊れていたのは未使用の上級者向けtricksノードのみで、既存7ワークフローは全て無事）" },
       { "date": "2026-08-06T12:35:00.000Z", "note": "作成。X(旧Twitter)の投稿「RTX3060 12GBでMiniMax-H3を動かした」を参考に、同様のText-to-Video/Image-to-Video環境をComfyUIに構築できるか検証・構築することが目的" }
     ]
+  },
+  {
+    "id": "1786212750741-note1",
+    "title": "note収益化計画",
+    "type": "task",
+    "project": "note",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-08-08T18:12:30.000Z",
+    "updatedAt": "2026-08-08T18:12:30.000Z",
+    "history": [
+      { "date": "2026-08-08T18:12:30.000Z", "note": "note収益化の方針を検討・確定。当初はComfyUI・Claude Code自動化・家計簿可視化など複数の柱を並列で立てる案だったが、自機がRTX 4060 Ti（VRAM 8GB）/ RAM 16GBであることを逆手に取り、「VRAM 8GBの低スペック環境でローカル生成AIをどこまでやれるか」を連載全体の旗として一本化する方針に変更。8GB帯は国内で最も読者母数が多く、上位機の記事にはない「工夫」と「動かなかった記録」が商品になるという判断。連載の核は全記事共通の検証環境表記と動作判定表（◎そのまま動く/○設定を落とせば動く/△実用外の遅さ/✕載らない）、実測は解像度・ステップ数・生成時間・ピークVRAM・ピークRAMの5点セットで固定。本命商品は8GB調整済みワークフローJSONの有料配布。柱Bは「GPUが非力だからコード生成と自動化はClaude Codeに投げる」という筋書きで柱Aと接続する。企画書PDFを C:\\Users\\tak_m\\iCloudDrive\\Claude\\note_monetization_plan_v2.pdf に保存（v1は一本化前の複数柱版）。次の着手は FLUX Kontext の Q4_K_M(6.46GB) vs Q8_0(11.84GB) 実測比較記事で、ここで判定表のフォーマットも確定させる。" },
+      { "date": "2026-08-08T18:12:30.000Z", "note": "作成" }
+    ]
   }
 ]
