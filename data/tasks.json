@@ -421,8 +421,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-10T22:15:00.000Z",
+    "updatedAt": "2026-08-10T22:40:00.000Z",
     "history": [
+      {
+        "date": "2026-08-10T22:40:00.000Z",
+        "note": "前回導入したTurbo LoRA + SageAttention一式（カスタムノード・DLしたLoRA・新規workflow・venvのtriton-windows/sageattention）を全て削除しロールバック。他でそこそこ動くワークフローがあり、今回の構成はこの環境では完走見込みが低いと判断したため。検証結果は次回のnote記事(連載第2回)の素材として活用予定。"
+      },
       {
         "date": "2026-08-10T22:15:00.000Z",
         "note": "X投稿(「Larry Turbo + H3 Sage」)を参考に、MiniMax-H3の高速化(Turbo LoRA v4_step600_ema + SageAttention)をvideo_minimax_h3_i2v向けに導入。triton-windowsとSageAttention(cu130/torch2.13対応ホイール)をvenvにインストールし、Larryvrh/ComfyUI-MiniMax-H3-Turboカスタムノードを導入、新規ワークフローvideo_minimax_h3_i2v_turbo_sage.jsonを作成。LoRA適用・SageAttentionパッチ・Turboサンプラーの動作ロジックはログ上で正常動作を確認。ただし実機では生成の最初のフォワードパスでComfyUIプロセスごとクラッシュ(Tracebackなし)。Sage有無・LoRAのbypass/mergeモード切替・未改変の元ワークフローでも同一地点でクラッシュしたため、今回の改修固有の不具合ではなく、環境側(8GB VRAM+システムRAM16GBに対しモデルが約20GBのステージングを要求)のリソース逢迫が原因の可能性が高いと判断。フル生成の完走は未確認のまま。次回は他アプリを閉じてRAMを空けた状態での再検証、または低解像度/短尺での動作確認が必要。"
