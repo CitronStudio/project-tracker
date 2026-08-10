@@ -385,8 +385,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-03T06:30:00.000Z",
-    "updatedAt": "2026-08-03T08:45:00.000Z",
+    "updatedAt": "2026-08-10T17:35:00.000Z",
     "history": [
+      {
+        "date": "2026-08-10T17:35:00.000Z",
+        "note": "X検索でSeedVR2以外の選択肢を調査（/search_x）。まず「肌の不自然な滑らかさ／プラスチック感」は自分の環境固有の不具合ではなく、SeedVR2自体の既知の弱点としてコミュニティでも議論されていることを確認（Nvidia VSRとの比較投稿等）。有力な代替・補完候補は次の3つ: ①FL SeedVR2（filliptm/ComfyUI-FL-SeedVR2、1.4B軽量版・低VRAM・自動DL・バッチ対応、2026-07-30公開の新しいノードで実績は未検証）②NVIDIA RTX VSR（ComfyUI公式ノード、DeBlur→VSR/High Bitrateの2パスで低VRAM・生成系でないため自然な質感、動画中心だが静止画にも応用可の情報あり）③Wan2.2 low_noiseモデルを denoise 0.03 程度の超低denoiseでRealESRGAN後段にかける手法（顔を潰さず整えるとの報告、現行のKontext精密化ステージ〔denoise=1〕より破綻リスクが低い可能性）。逆に、SUPIRは公式統合されたが「全然ダメ」という否定的な声もあり、Pixel-Anchored Remasterはイラスト向け高denoise再描画方式で顔が変わりすぎるため写真の身元保持用途には不適と判断（検証不要）。詳細は要裏取りだがレポートとして提示済み、次のアクションはFL SeedVR2かRTX VSRノードの試験導入"
+      },
       {
         "date": "2026-08-03T08:45:00.000Z",
         "note": "Photo_enhance_2400_v2に「Kontext精密化ステージ」（⑤〜⑧、node30〜49）を追加。SeedVR2出力(A)をKontextで「姿勢・表情・構図は変えず画質だけ上げる」指示(FluxGuidance 1.5)で再生成し、flux_kontext_pose_editと同じESRGAN後処理をかける。旧flux_kontext_pose_editで姿勢を変えた際(B)に見られた髪の質感・肌のキメの向上を、姿勢を変えずに再現できることを確認。従来のSeedVR2単体出力(⑦)は新ステージと独立した分岐として残しており、⑤〜⑧をCtrl+Bでバイパスすれば追加前の状態に完全に戻る設計。生画像からの通しテストでも1792x2400で正常動作を確認済み"
