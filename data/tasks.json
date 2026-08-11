@@ -385,8 +385,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-03T06:30:00.000Z",
-    "updatedAt": "2026-08-10T17:35:00.000Z",
+    "updatedAt": "2026-08-11T23:09:25.000Z",
     "history": [
+      {
+        "date": "2026-08-11T23:09:25.000Z",
+        "note": "NVIDIA RTX VSRノード群をComfyUIに実装・検証完了。公式のComfy-Org/Nvidia_RTX_Nodes_ComfyUI(RTX Video Super Resolution)と、コミュニティ版PixWizardry/ComfyUI-PIX_Nvidia_RTX_Deblur_Denoise(RTX Deblur/RTX Denoise)をcustom_nodesに導入し、依存パッケージnvidia-vfx(pypi.nvidia.com経由、--no-build-isolation必須)をvenvにインストール。事前調査で言及されていた「DeBlur/DeNoise/High Bitrate/VSRの4ノード」という構成は実在せず、実体はDeblur/Denoise/VSRの3ノード(High BitrateはVSRのquality設定に統合済み)と判明。a09.jpg(400x603)で「DeBlur(Moderate)→VSR(2倍,ULTRA)」の2パス処理を実行し、800x1208へのアップスケールに成功。VSR単体との比較画像も生成し目視確認。ハードウェアアクセラレーション方式のため生成系アップスケーラ(SeedVR2等)と異なり別人化リスクが低いという仮説どおり、輪郭・ディテールとも破綻なく処理できることを確認。次のアクションはFL SeedVR2との品質・速度比較"
+      },
       {
         "date": "2026-08-10T17:35:00.000Z",
         "note": "X検索でSeedVR2以外の選択肢を調査（/search_x）。まず「肌の不自然な滑らかさ／プラスチック感」は自分の環境固有の不具合ではなく、SeedVR2自体の既知の弱点としてコミュニティでも議論されていることを確認（Nvidia VSRとの比較投稿等）。有力な代替・補完候補は次の3つ: ①FL SeedVR2（filliptm/ComfyUI-FL-SeedVR2、1.4B軽量版・低VRAM・自動DL・バッチ対応、2026-07-30公開の新しいノードで実績は未検証）②NVIDIA RTX VSR（ComfyUI公式ノード、DeBlur→VSR/High Bitrateの2パスで低VRAM・生成系でないため自然な質感、動画中心だが静止画にも応用可の情報あり）③Wan2.2 low_noiseモデルを denoise 0.03 程度の超低denoiseでRealESRGAN後段にかける手法（顔を潰さず整えるとの報告、現行のKontext精密化ステージ〔denoise=1〕より破綻リスクが低い可能性）。逆に、SUPIRは公式統合されたが「全然ダメ」という否定的な声もあり、Pixel-Anchored Remasterはイラスト向け高denoise再描画方式で顔が変わりすぎるため写真の身元保持用途には不適と判断（検証不要）。詳細は要裏取りだがレポートとして提示済み、次のアクションはFL SeedVR2かRTX VSRノードの試験導入"
