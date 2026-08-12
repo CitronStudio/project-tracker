@@ -385,8 +385,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-03T06:30:00.000Z",
-    "updatedAt": "2026-08-12T01:20:41.000Z",
+    "updatedAt": "2026-08-12T04:30:43.000Z",
     "history": [
+      {
+        "date": "2026-08-12T04:30:43.000Z",
+        "note": "「RTX VSR→顔だけマスク→SDXL部分精密化」方式をPhoto_enhance_FaceOnly_v1.jsonとして正式登録。Flux Kontext版(Photo_enhance_RTXVSR_Kontext_v1)で発覚した「背景まで不自然に壊れる」問題を、画像全体を再生成する方式をやめ、顔領域だけをマスクしてSetLatentNoiseMaskで部分denoise(0.3)する方式に変更して解消。顔検出・マスク生成は外部スクリプト無しでComfyUI核内で完結(LoadMediaPipeFaceLandmarker/MediaPipeFaceLandmarker/MediaPipeFaceMask、モデルファイルmediapipe_face_fp32.safetensors(5.4MB)をComfy-Org公式HuggingFaceからDLしてmodels/detection/に配置)。SDXLはcyberrealisticXL_v56を使用、denoise=0.3/steps=30/cfg=5/dpmpp_2m+karrasが現状の推奨値。portrait_wall_test.jpg(平坦な壁背景)とIMG_2911(古い印刷写真、紙のバスケット織り模様入り)の2枚で検証し、いずれも背景を完全保持したまま顔だけシャープ化・肌質改善を確認。RTX VSRノードはダウンスケール方向のtarget dimensions指定でもエラーなく動作することも副次的に確認。GUIのQueueボタンからの実行でも正常動作を確認済み"
+      },
       {
         "date": "2026-08-12T01:20:41.000Z",
         "note": "「RTX VSR(HIGH)→Flux Kontext精密化→肌質感モデル(1x-ITF-SkinDiffDetail-Lite)」の3段パイプラインをComfyUIワークフロー Photo_enhance_RTXVSR_Kontext_v1.json として正式登録。既存のPhoto_enhance_2400_v2にあったKontext精密化+肌質感モデル部分を流用し、前段のSeedVR2をRTX VSRに置き換える形で構築。ベンチマーク比較(顔の拡大)ではKontext+肌質感モデルを通すことでRTX VSR単体より明らかにシャープさ・質感が向上し、ベンチマークに近づくことを確認。ただしFluxKontextImageScaleがKontextモデルの固定解像度にキャンバスを合わせる際、元画像に無い背景を周辺に描き足し、結果としてやや引き気味の構図になる癖があると判明(ワークフロー内のNoteに詳細記録)。証明写真等の厳密な構図保持用途には不向き。ワークフローファイルはComfyUI Manager経由ではなくブラウザのapp.loadApiJson()/graph.serialize()を使い、API形式プロンプトから正規のワークフローJSONへ変換して保存"
