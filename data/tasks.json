@@ -385,8 +385,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-03T06:30:00.000Z",
-    "updatedAt": "2026-08-12T04:30:43.000Z",
+    "updatedAt": "2026-08-12T08:22:58.000Z",
     "history": [
+      {
+        "date": "2026-08-12T08:22:58.000Z",
+        "note": "「RTX系4種(実際は3種)ノードが現状のワークフローに反映されているか」を再確認したところ、既存の正式ワークフロー(Photo_enhance_FaceOnly_v1、Photo_enhance_RTXVSR_Kontext_v1)はいずれもVSR単体のみでDeblur/Denoiseの前処理は未使用と判明。Denoise→Deblur→VSRのフルチェーンを別ワークフローPhoto_enhance_RTXVSR_DenoiseDeblur_v1.jsonとして新規作成し、a09.jpgを使いDenoise/Deblurの強度組み合わせ5パターン(Light/Light, Moderate/Moderate, Aggressive/Aggressive,Deblurのみ, 順序入れ替え)でbenchmark.jpegとの近さを再検証。結果、5パターンとも互いにほぼ差がなく、benchmark.jpegとの精細さの差も縮まらなかった。Denoise/DeblurをVSR前段に挟んでも「非生成系アルゴリズムは元画像に無い情報を復元できない」という既知の限界は変わらないことを再確認。Denoise/Deblurはノイズ/ピンボケが実際にある素材には有効な見込みだが、a09.jpgのような単純な低解像度素材には効果薄と結論。デフォルトパラメータはDenoise Moderate + Deblur Moderate + VSR ULTRAで確定・保存"
+      },
       {
         "date": "2026-08-12T04:30:43.000Z",
         "note": "「RTX VSR→顔だけマスク→SDXL部分精密化」方式をPhoto_enhance_FaceOnly_v1.jsonとして正式登録。Flux Kontext版(Photo_enhance_RTXVSR_Kontext_v1)で発覚した「背景まで不自然に壊れる」問題を、画像全体を再生成する方式をやめ、顔領域だけをマスクしてSetLatentNoiseMaskで部分denoise(0.3)する方式に変更して解消。顔検出・マスク生成は外部スクリプト無しでComfyUI核内で完結(LoadMediaPipeFaceLandmarker/MediaPipeFaceLandmarker/MediaPipeFaceMask、モデルファイルmediapipe_face_fp32.safetensors(5.4MB)をComfy-Org公式HuggingFaceからDLしてmodels/detection/に配置)。SDXLはcyberrealisticXL_v56を使用、denoise=0.3/steps=30/cfg=5/dpmpp_2m+karrasが現状の推奨値。portrait_wall_test.jpg(平坦な壁背景)とIMG_2911(古い印刷写真、紙のバスケット織り模様入り)の2枚で検証し、いずれも背景を完全保持したまま顔だけシャープ化・肌質改善を確認。RTX VSRノードはダウンスケール方向のtarget dimensions指定でもエラーなく動作することも副次的に確認。GUIのQueueボタンからの実行でも正常動作を確認済み"
