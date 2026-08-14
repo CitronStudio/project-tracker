@@ -201,8 +201,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-07-23T13:13:25.000Z",
-    "updatedAt": "2026-08-14T09:45:00.000Z",
+    "updatedAt": "2026-08-15T03:15:00.000Z",
     "history": [
+      {
+        "date": "2026-08-15T03:15:00.000Z",
+        "note": "要件変更（透過PNG廃止・白背景のみに統一、iCloud Pages表示倍率300%で高解像度化、対象を9月以降の公演に限定）に対応。show1(8/30)を除く6公演（9/4下北沢440・9/12下北沢RHAPSODY・9/20下北沢Daisy Bar・10/9下北沢CLUB251・10/24札幌REVOLVER909・10/25札幌SOUND CRUE）を新仕様で作り直し完了。実装面では、iCloud Pagesのテキスト選択・置換操作がJS合成イベント(dispatchEvent)では一切効かず、Playwrightのbrowser_run_code_unsafe経由でpage.mouse/page.keyboardの信頼された入力を使う必要があると判明し解決。手法（実クリック・編集順序は下から上・文字数カウントでの範囲選択）をSKILL.mdに反映済み。"
+      },
       {
         "date": "2026-08-14T09:45:00.000Z",
         "note": "上位版（Helvetica Neue使用）に着手。iCloud PagesがWindows機でもHelvetica Neueをブラウザ経由でレンダリングできることを確認し、新スキル/wilberry_lsとして再構築。ヘッダー（日付・曜日・会場、フォント混在＋固定行間）、イベントタイトル、本文（出演者・Guest/DJ追加行・開場時間/料金）の書式仕様を確定。wilberry.jp本番から現在の公演7件を取得し、2公演/枚（端数は1枚に1公演）で実データの文字情報画像4枚を生成・`live_info_generator`フォルダに保存するところまで一気通貫で動作確認。横幅の動的計算（ヘッダー幅×120%）等は未実装で残課題"
