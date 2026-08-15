@@ -461,8 +461,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-10T22:40:00.000Z",
+    "updatedAt": "2026-08-15T05:40:00.000Z",
     "history": [
+      {
+        "date": "2026-08-15T05:40:00.000Z",
+        "note": "X(旧Twitter)検索でref2V環境構築（I2Vと同一ワークフローでの参照画像/動画生成）について調査（/search_xスキル、直近72時間中心）。判明した主な事実: (1) ComfyUI-MiniMaxH3-Easy（nkxx188版、バグ修正フォークrobustonian版）がT2V/I2V/Ref2Vを1ワークフローで切替できる統合ノードとして複数投稿で言及されており、当タスクが目指す構成にほぼ合致。(2) MinimaxH3HybridLoader（scottmudge）+ 専用Turbo LoRA(8step版)併用でRef2Vの画質が大幅改善し高速化するとの報告あり。(3) GGUF量子化版が存在（Q4は12GB未満、Q3は9GB未満）で、8GB VRAM環境ではQ3が候補になりうる。参考実例としてRTX3060 12GBでGGUF Q4+Turbo LoRA(8step)が動作したとの報告も確認（ただしこれは収集ウィンドウ外の投稿）。(4) 複数参照画像は1枚に9分割合成して渡すことで生成時間増大を回避するテクニックも報告あり。調査結果はPDF資料化しユーザーに送付済み（MiniMax-H3_Ref2V環境構築_資料.pdf）。次のアクションはComfyUI-MiniMaxH3-Easyの導入検証。"
+      },
       {
         "date": "2026-08-10T22:40:00.000Z",
         "note": "前回導入したTurbo LoRA + SageAttention一式（カスタムノード・DLしたLoRA・新規workflow・venvのtriton-windows/sageattention）を全て削除しロールバック。他でそこそこ動くワークフローがあり、今回の構成はこの環境では完走見込みが低いと判断したため。検証結果は次回のnote記事(連載第2回)の素材として活用予定。"
