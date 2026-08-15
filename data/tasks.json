@@ -461,8 +461,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-15T05:40:00.000Z",
+    "updatedAt": "2026-08-15T10:15:00.000Z",
     "history": [
+      {
+        "date": "2026-08-15T10:15:00.000Z",
+        "note": "I2V(fl2va)とRef2V(ref2va)を1本で切り替えられる新規ワークフロー`video_minimax_h3_i2v_ref2v_v1.json`を作成し、両モードの生成成功を確認（既存ワークフローは未変更）。重要な発見: (1) ComfyUI v0.31.0のコアに`MiniMaxH3ReferenceToVideo`が既に存在し、ref2vaはカスタムノード不要で使える。当初検討していたComfyUI-MiniMaxH3-Easyは導入せず（利点がUXラッパーのみと判明したため、8/10のロールバックを踏まえ依存を増やさない判断）。(2) ref2vaは`minimax_h3_fl2va_pruned_int8_convrot`と同じチェックポイントで動作し別ウェイト不要。8/7調査の「ref2vaは別ウェイト」はTurbo LoRA併用時の制約だった。(3) **t2va/fl2va/ref2vaはモデル側で排他のタスクモード**であり「開始フレーム固定＋参照画像」の同時使用は不可（コアのトークナイザが`images`と`minimax_ref_items`をif/elseで排他処理。Easyノードでも同様）。そのため1ワークフロー内で切り替える構成にした。(4) Autogrow入力はAPI/ワークフロー上でドット区切りの`ref_images.ref_image_0`という名前で指定する（フラットな`ref_image_0`ではTypeErrorになる）。構成: コアノード＋KJNodesの`LazySwitchKJ`（遅延評価で未選択ブランチを実行しない）、PrimitiveBooleanのトグル1つで切替。Turbo LoRA不使用のためsteps=20。実測: RTX4060Ti 8GB/--lowvramで576x768・73フレーム(3.04秒)・20stepがRef2V約6分45秒、I2V約9分15秒(初回モデルロード込み)、音声(32kHz stereo)付きで生成成功。テストは参照画像2枚(キャラ＋ネオン街)で、キャラの同一性・背景ともに良好に再現。"
+      },
       {
         "date": "2026-08-15T05:40:00.000Z",
         "note": "X(旧Twitter)検索でref2V環境構築（I2Vと同一ワークフローでの参照画像/動画生成）について調査（/search_xスキル、直近72時間中心）。判明した主な事実: (1) ComfyUI-MiniMaxH3-Easy（nkxx188版、バグ修正フォークrobustonian版）がT2V/I2V/Ref2Vを1ワークフローで切替できる統合ノードとして複数投稿で言及されており、当タスクが目指す構成にほぼ合致。(2) MinimaxH3HybridLoader（scottmudge）+ 専用Turbo LoRA(8step版)併用でRef2Vの画質が大幅改善し高速化するとの報告あり。(3) GGUF量子化版が存在（Q4は12GB未満、Q3は9GB未満）で、8GB VRAM環境ではQ3が候補になりうる。参考実例としてRTX3060 12GBでGGUF Q4+Turbo LoRA(8step)が動作したとの報告も確認（ただしこれは収集ウィンドウ外の投稿）。(4) 複数参照画像は1枚に9分割合成して渡すことで生成時間増大を回避するテクニックも報告あり。調査結果はPDF資料化しユーザーに送付済み（MiniMax-H3_Ref2V環境構築_資料.pdf）。次のアクションはComfyUI-MiniMaxH3-Easyの導入検証。"
