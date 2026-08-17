@@ -532,5 +532,26 @@
         "note": "作成"
       }
     ]
+  },
+  {
+    "id": "1786967870408-dinnermenu1",
+    "title": "夕食献立アプリ",
+    "type": "task",
+    "project": "献立アプリ",
+    "repo": "CitronStudio/dinner-menu-app",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-08-17T11:57:50.000Z",
+    "updatedAt": "2026-08-17T11:57:50.000Z",
+    "history": [
+      {
+        "date": "2026-08-17T11:57:50.000Z",
+        "note": "スキャフォールド作成。構成は静的フロントエンド(GitHub Pages)＋Cloudflare Worker(外部サイト取得・Claude APIキー秘匿)。旬の食材データ(月別JSON)、NG項目/追加条件のテキスト入力、スーパーの特売ページを取得してAI(Claude)に生テキストごと渡し献立案(JSON)を生成させる方式で実装。特売取得は店舗ごとの個別スクレイパーを作らず「HTMLのタグ除去だけしてAIに読み取らせる」簡易方式を採用（サイト構造変化に強い代わりに読み取り精度はAI依存）。リポジトリ作成・push・GitHub Pages有効化まで完了。残作業: ユーザーによるCloudflareログイン・Claude APIキー設定・Workerデプロイ、対象スーパー3店舗の確定（worker/src/stores.js）、config.jsへの実URL反映"
+      },
+      {
+        "date": "2026-08-17T11:57:50.000Z",
+        "note": "作成。要件: 旬の食材から探せる、近所のスーパー最大3店舗の特売情報をネットから取得して提案に組み込む、NG項目(例:揚げ物はNG)を文章で入力すると提案に反映、家族利用(URLを知っている人が使える)、GitHubリポジトリ管理＋ブラウザ動作"
+      }
+    ]
   }
 ]
