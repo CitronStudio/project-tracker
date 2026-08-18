@@ -473,8 +473,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-15T10:15:00.000Z",
+    "updatedAt": "2026-08-18T15:10:49.000Z",
     "history": [
+      {
+        "date": "2026-08-18T15:10:49.000Z",
+        "note": "X(旧Twitter)で見つけたITOK氏(@ITOKtw)の投稿を再現し、静止画生成(t2i/ref2i)を新規構築。(1) t2i: ComfyUI本体をnightly(master、コミットcc0fc21)まで更新しPR #15677（通常のEmptyLatentImageノードをH3にそのまま使えるようにする変更、2026-08-16マージ・直近の安定版v0.33.2にも未収録）を導入。要件変更に伴いvenv内のrequirements.txtも再インストール（comfyui-frontend-package等が更新）。Mamad8/MiniMax-H3-Image-VAE（T=1専用の軽量デコーダVAE、SHA256照合済み、動画用途には不可）を追加DL。新規ワークフロー`image_minimax_h3_t2i.json`を作成——UNETLoader+CLIPLoader+通常のCLIPTextEncode+EmptyLatentImage+SamplerCustomAdvanced(res_multistep/simple/30step)+新VAEでVAEDecodeという構成で、MiniMaxH3ImageToVideo/ReferenceToVideoノードを介さない分ITOK氏の報告通り高速化が見込める。(2) ref2i: 既存の`video_minimax_h3_i2v_ref2v_v1.json`のref2vaブランチを流用し、length=5(最小)に短縮の上、VAEDecode後にImageFromBatchで先頭フレームのみ抽出しSaveImageする`image_minimax_h3_ref2i.json`を新規作成（VAEは元の動画用VAEを継続使用、新image-VAEはT=1専用のため不可）。両ワークフローともComfyUIをCPUモードで一時起動しブラウザ操作(Playwright)でグラフを読み込み、graphToPrompt()と`/api/prompt`への実POSTで構造・入力妥当性を検証（node_errors無し、prompt_id発行を確認）。巨大モデルの実ロード前に`/api/interrupt`で中断しキューをクリア、検証用サーバーは停止済み。GPUでの実生成（画質・速度の実測）は未実施、次回の課題。"
+      },
       {
         "date": "2026-08-15T10:15:00.000Z",
         "note": "I2V(fl2va)とRef2V(ref2va)を1本で切り替えられる新規ワークフロー`video_minimax_h3_i2v_ref2v_v1.json`を作成し、両モードの生成成功を確認（既存ワークフローは未変更）。重要な発見: (1) ComfyUI v0.31.0のコアに`MiniMaxH3ReferenceToVideo`が既に存在し、ref2vaはカスタムノード不要で使える。当初検討していたComfyUI-MiniMaxH3-Easyは導入せず（利点がUXラッパーのみと判明したため、8/10のロールバックを踏まえ依存を増やさない判断）。(2) ref2vaは`minimax_h3_fl2va_pruned_int8_convrot`と同じチェックポイントで動作し別ウェイト不要。8/7調査の「ref2vaは別ウェイト」はTurbo LoRA併用時の制約だった。(3) **t2va/fl2va/ref2vaはモデル側で排他のタスクモード**であり「開始フレーム固定＋参照画像」の同時使用は不可（コアのトークナイザが`images`と`minimax_ref_items`をif/elseで排他処理。Easyノードでも同様）。そのため1ワークフロー内で切り替える構成にした。(4) Autogrow入力はAPI/ワークフロー上でドット区切りの`ref_images.ref_image_0`という名前で指定する（フラットな`ref_image_0`ではTypeErrorになる）。構成: コアノード＋KJNodesの`LazySwitchKJ`（遅延評価で未選択ブランチを実行しない）、PrimitiveBooleanのトグル1つで切替。Turbo LoRA不使用のためsteps=20。実測: RTX4060Ti 8GB/--lowvramで576x768・73フレーム(3.04秒)・20stepがRef2V約6分45秒、I2V約9分15秒(初回モデルロード込み)、音声(32kHz stereo)付きで生成成功。テストは参照画像2枚(キャラ＋ネオン街)で、キャラの同一性・背景ともに良好に再現。"
