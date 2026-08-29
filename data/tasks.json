@@ -473,8 +473,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-27T05:03:05.000Z",
+    "updatedAt": "2026-08-29T12:00:18.127Z",
     "history": [
+      {
+        "date": "2026-08-29T12:00:18.127Z",
+        "note": "ref2i（参照画像→静止画）系のテンプレートワークフロー ref2i_template.json に、4s系で実績のある H3-Optimizations と TurboLoRA を移植した新規ワークフロー ref2i_template_h3opt_turbo.json を別名保存。モデル経路を UNETLoader → LoraLoaderModelOnly(minimax_h3_fl2v_turbo_4step LoRA, strength1.0) → 既存の MiniMax H3 SigmaShift(12/3) → H3AIMDOResidencyLimiter(2 blocks) → H3MemoryOptimization(Auto) → H3SparseAttention(video_budget 0.3) → Guider/Scheduler に再結線。TurboLoRA(4step)に合わせ BasicScheduler の steps を 20→4 に変更。"
+      },
       {
         "date": "2026-08-27T05:03:05.000Z",
         "note": "X(旧Twitter)投稿からZironic/H3-Optimizations（ComfyUI用MiniMax H3メモリ最適化・スパースアテンションのカスタムノード集、0.2.14）を発見・調査し、RTX4060Ti 8GBでの動作検証まで実施。導入: custom_nodesにgit clone、ComfyUI-Manager経由でサーバー再起動しノード認識を確認（H3MemoryOptimization/H3SparseAttention/H3AIMDOResidencyLimiterがcomfy-kitchen 0.2.31・comfy-aimdo 0.4.13上でSM89ネイティブKitchen INT8経路を使用）。既存の本番ワークフロー`MiniMax_H3_I2V_Singal_turbo_prod.json`（信号機点滅のテスト動画、Turbo LoRA 4step）を複製し、SigmaShift出力にAIMDO Residency Limiter(2 blocks)→H3 Memory Optimization(Auto)→H3 Sparse Attention(video_budget 30%)を直列追加した新規ワークフロー`MiniMax_H3_I2V_Singal_h3opt_test.json`を作成。ComfyUIの/promptAPIへ同一プロンプト・同一入力画像でPOSTしテスト生成（1152x640・8秒・192フレーム・音声付き）に成功。実測: 生成時間4分28秒（キュー投入〜完了）、ピークVRAM使用量7205MiB/8188MiB（88%、モデルロード時が最大でサンプリング中は5.9〜6.9GB程度で推移）。旧構成（H3-Optimizations無し）との時間・VRAMの直接比較は今回未実施だが、Reddit発の作者ベンチマーク（RTX4070でのSparse Attention有効時ピーク5.3〜7.3GB相当）と整合する結果が得られ、8GB VRAM環境での実用性を確認できた。"
