@@ -40,8 +40,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-07-23T13:13:25.000Z",
-    "updatedAt": "2026-08-06T00:45:00.000Z",
+    "updatedAt": "2026-08-30T01:40:19.000Z",
     "history": [
+      {
+        "date": "2026-08-30T01:40:19.000Z",
+        "note": "本番Showsの終了公演を指定時刻に自動非表示化する仕組みを新規導入。8/30の下北沢CLUB251公演(投稿ID=4448 HAPPY SUNDAY FESTIVAL VOL.4)を、8/30 23:59 JSTにこのPCのWindowsタスクスケジューラ(タスク名 wilberry_hide_show_4448)からPowerShellスクリプトを一回実行し、REST APIで status を publish→draft に変更して非表示化する。スクリプトは C:/Users/tak_m/OneDrive/ドキュメント/wilberry/Dev/show_unpublish/ に配置(hide_show.ps1 / 取消用 restore_show.ps1)。WordPressには予約非公開機能がないための対応。PC起動時に実行できなければStartWhenAvailableで次回起動時に実行。"
+      },
       {
         "date": "2026-08-06T00:45:00.000Z",
         "note": "wilberry-cloud-ops（iPhoneからのクラウド運用）の対象を本番にも拡大。本番も同じApplication Passwordがそのまま使えることを確認し、ユーザーの明確な意思（利用者は自分のみのため安全弁不要）により制限なしで本番書き込み権限を付与。これでiPhoneから直接、本番・DEVどちらにもライブ情報を反映できるようになった"
