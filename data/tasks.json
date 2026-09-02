@@ -40,8 +40,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-07-23T13:13:25.000Z",
-    "updatedAt": "2026-09-01T14:44:11.000Z",
+    "updatedAt": "2026-09-02T05:11:00.000Z",
     "history": [
+      {
+        "date": "2026-09-02T05:11:00.000Z",
+        "note": "過去ライブ一覧DEVページを継続調整: 日時列を yyyy/mm/dd 表記・全年で列幅を統一。マスターxlsxの再調査フラグ追加分4件を追加調査（2024年9月の大阪/名古屋 wilberry×violets ツアー等、DJまで判明。2023-08-27「HAPPY SUNDAYS FESTIVAL」はHOSSYが共演でなくwilberryサポート鍵盤で誤記だったため MAGUMI AND THE BREATHLESS/my funny hitchhiker/wash?/the MADRAS に修正）。運用ルールを確定: 共演欄にはイベント名・開場/開演時刻などの公演情報は書かず出演者(＋DJ)のみとする。既存数件のカッコ書き公演情報も除去。xlsx更新分をDEVに再アップロード済み。本番は未反映。"
+      },
       {
         "date": "2026-09-01T14:44:11.000Z",
         "note": "過去ライブ一覧ページ（DEV `/past-shows/`、固定ページID4500）を年区切りレイアウトに再構築。年ごとに大きな太字見出し（Helvetica Neue Condensed系フォント指定＋下線）＋その年の一覧テーブルを降順(2026→2014)で並べる形にし、掲載範囲を2014年以降に限定（マスターxlsx 290件→224件、2013年以前は非掲載）。反映はREST API POST（app-password Basic認証、41KBのcontentでも200 OK、今回は403 WAFに当たらず）。あわせてマスター `wilberry_live_history_xlsx.xlsx` の「Check」列フラグ7件をweb再調査（公式サイト旧版/公式ブログ/各ライブハウス公式）で共演欄を補完し、2024-12-31はQue・251ハシゴ出演で会場表記が正しいこと等を確認。本番(wilberry.jp)への同レイアウト反映は未実施（依頼待ち）。"
