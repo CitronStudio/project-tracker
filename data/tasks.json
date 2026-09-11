@@ -568,5 +568,21 @@
         "note": "作成"
       }
     ]
+  },
+  {
+    "id": "1789097196292-krea2turbo1",
+    "title": "Krea 2 Turbo画像生成構築",
+    "type": "task",
+    "project": "画像・動画生成",
+    "tags": [],
+    "status": "進行中",
+    "createdAt": "2026-09-11T03:26:23.000Z",
+    "updatedAt": "2026-09-11T03:26:23.000Z",
+    "history": [
+      {
+        "date": "2026-09-11T03:26:23.000Z",
+        "note": "Krea 2 Turbo(Krea AIのオープンソース画像生成モデル、8step蒸留Turbo版)導入に着手。Web調査/X調査により、このComfyUI環境(v0.33.0-23-gcc0fc21f)にはkrea2アーキテクチャが本体にネイティブ実装済みと判明(サードパーティ製カスタムノード不要、CLIPLoaderのtype=krea2を選ぶだけでOK)。基本T2Iワークフロー image_krea2_turbo_t2i.json を新規作成(UNETLoader→BasicScheduler/BasicGuider→SamplerCustomAdvanced→VAEDecode→SaveImage構成、euler/simple/8step/denoise1)、JSON構文・リンク型整合性を検証済み。ただしdiffusion_models/krea2_turbo_fp8_scaled.safetensors、text_encoders/qwen3vl_4b_fp8_scaled.safetensors、vae/qwen_image_vae.safetensors(計約18.6GB、入手元 https://huggingface.co/Comfy-Org/Krea-2 )が未配置のためaria2でダウンロード中。完了後に実動作テストを行う予定"
+      }
+    ]
   }
 ]
