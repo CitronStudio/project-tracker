@@ -497,8 +497,12 @@
     "tags": [],
     "status": "進行中",
     "createdAt": "2026-08-06T12:40:00.000Z",
-    "updatedAt": "2026-08-29T12:00:18.127Z",
+    "updatedAt": "2026-09-16T14:50:00.000Z",
     "history": [
+      {
+        "date": "2026-09-16T14:50:00.000Z",
+        "note": "X投稿(ai_hakase_氏)で紹介されていた「MiniMax H3を静止画編集に転用する裏ワザ」を再現し、自撮り写真への衣装差し替え用ワークフロー`image_minimax_h3_costume_swap.json`を新規作成。Ref2Vモードで人物写真(ref_image_0)+衣装参考画像(ref_image_1)を渡し、生成された数フレームからImageFromBatchで1枚抜き出す構成。08/29のh3opt_turbo移植と同じくH3-Optimizations(AIMDOResidencyLimiter/MemoryOptimization/SparseAttention)+TurboLoRA(4step)を組み込み済み。実機テストでは解像度・step・frame数(576x768/22f/20step → 512x704/5f/4step)を変えても毎回「サンプリング開始直後」の同一地点でプロセスが強制終了され、生成完了に至らず。ログ上はCUDA OOMではなく外部からの強制終了で、Claude Code経由の裏起動（背景プロセスへのメモリ監視）が原因の可能性が高いと判断し、ユーザー自身によるいつも通りの起動(`run_comfyui.bat`)での実行待ちとして一旦保留。"
+      },
       {
         "date": "2026-08-29T12:00:18.127Z",
         "note": "ref2i（参照画像→静止画）系のテンプレートワークフロー ref2i_template.json に、4s系で実績のある H3-Optimizations と TurboLoRA を移植した新規ワークフロー ref2i_template_h3opt_turbo.json を別名保存。モデル経路を UNETLoader → LoraLoaderModelOnly(minimax_h3_fl2v_turbo_4step LoRA, strength1.0) → 既存の MiniMax H3 SigmaShift(12/3) → H3AIMDOResidencyLimiter(2 blocks) → H3MemoryOptimization(Auto) → H3SparseAttention(video_budget 0.3) → Guider/Scheduler に再結線。TurboLoRA(4step)に合わせ BasicScheduler の steps を 20→4 に変更。"
