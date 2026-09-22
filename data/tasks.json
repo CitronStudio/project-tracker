@@ -601,8 +601,12 @@
     "tags": [],
     "status": "完了",
     "createdAt": "2026-09-21T04:20:00.000Z",
-    "updatedAt": "2026-09-22T02:56:00.000Z",
+    "updatedAt": "2026-09-22T05:35:00.000Z",
     "history": [
+      {
+        "date": "2026-09-22T05:35:00.000Z",
+        "note": "姿勢制御を専用LoRA方式に刷新。X上で話題のVNCCS PoseStudio(AHEKOT/MIUProject制作、r/comfyuiで紹介)を発見・導入。実体はComfyUIノードとして動く3Dポージングツール(MakeHuman系リグ、体型スライダー、ポーズライブラリ、Mixamo FBXインポート、キーフレームアニメーション対応)で、そこで作ったポーズ姿勢画像をQwen-Image-2.1向け専用LoRAと組み合わせてref2iに渡す方式。カスタムノードComfyUI_VNCCS_Utils(github.com/AHEKOT/ComfyUI_VNCCS_Utils)をcustom_nodesにgit clone、requirements.txt(pytorch-lightning等4パッケージ新規)をvenvにインストール。LoRA本体VNCCS_QI2_PoseStudioV1.1.safetensors(159MB、HF:MIUProject/VNCCS_PoseStudio_QI2.1)をmodels/loras/QI2.1/VNCCS/に配置。公式サンプルワークフローも取得し、LoRAパスをV1→V1.1に差し替えてqwen_image21_vnccs_posestudio.jsonとして保存(UNETLoader→LoraLoaderModelOnly→QwenImage21Cache→KSamplerの構成で、既存のint8_convrot量子化unet/qwen3vl_8b_int8_convrot text encoder/vae bf16とそのまま組み合わせ可能と確認)。ワークフロー内のImage Comparer(rgthree)ノード用にrgthree-comfyも導入(requirements.txtは空で追加依存なし)。前回(9/22 02:56)の自前OpenPose骨格画像+プロンプト指示によるpose_ref方式は、骨格の描画自体が手間で自由度も低かったが、今回のPoseStudioは3D UI上で直接ポーズを作れる点で実用性が大きく向上する見込み。ComfyUI本体は現在起動中のため新規カスタムノードの反映(再起動)はユーザーが別途実施予定、実写真での動作確認は未実施。"
+      },
       {
         "date": "2026-09-22T02:56:00.000Z",
         "note": "ポーズ制御(REF2I)を追加検証。X調査でComfyUI公式のQwen-Image InstantX ControlNet-Union(pose/canny/depth/softedge対応、models/controlnetにダウンロードして導入)を発見し、qwen_image21_ref2i.jsonを複製したqwen_image21_ref2i_controlnet_pose.jsonにControlNetLoader→ControlNetApplyAdvanced経由で組み込んで実行したところ、KSampler内部で`ValueError: not enough values to unpack (expected 5, got 4)`が発生し失敗。ComfyUI公式テンプレート一覧(workflow_templates/index.json)を確認したところ、このControlNetは無印\"Qwen-Image\"専用、pose対応の別ControlNet(\"Fun Union\")も\"Qwen-Image 2512\"という別系統向けで、2026-09-20リリースの\"Qwen Image 2.1\"に対応する公式ControlNetテンプレートはまだ存在しないと判明(アーキテクチャ非互換が根本原因と推定)。そのため実運用は代替手段に切替: OpenPose形式の骨格ポーズ図(ボクシングのファイティングポーズ)をcomfyui_controlnet_auxのdraw_bodypose関数で自前生成し、ControlNetを使わずref2iの2枚目参照画像(<image2>)としてそのままプロンプトで指示する方式に変更したところ、実写真画像で意図通りポーズが変わることを確認(ControlNet系ノードは未使用のため削除)。この動作確認済み構成をqwen_image21_ref2i_pose_ref.jsonとして別名保存。ControlNet版ファイルは将来Qwen-Image-2.1対応版が出た際の土台として残置。"
