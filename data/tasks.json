@@ -601,8 +601,12 @@
     "tags": [],
     "status": "完了",
     "createdAt": "2026-09-21T04:20:00.000Z",
-    "updatedAt": "2026-09-22T05:35:00.000Z",
+    "updatedAt": "2026-09-22T06:10:00.000Z",
     "history": [
+      {
+        "date": "2026-09-22T06:10:00.000Z",
+        "note": "VNCCS PoseStudioワークフロー(qwen_image21_vnccs_posestudio.json)の実行エラーを解消し、実写真での動作確認まで完了。ユーザーが実行したところ`RuntimeError: aimdo memory compile error`で失敗との報告を受け、ComfyUIログを調査。原因はDynamicVRAM機能(comfy_aimdo、8GB VRAM向けのブロック単位ディスクストリーミング最適化)のメモリコンパイラが、LoRA適用済みモデル(192パッチ)を扱えず内部でクラッシュすること(low VRAM最適化とLoRAパッチの組み合わせがこの版で未対応と判明)。ComfyUI公式の回避フラグ`--disable-comfy-compiler`をrun_comfyui.batに追加(DynamicVRAM自体のブロックストリーミングは維持、コンパイラ最適化のみ無効化)し、既存の重複プロセスも含めて再起動。Playwright経由でComfyUI Web UIを操作し、実写真(vlcsnap-2026-08-10-16h29m02s127.png、制服姿で直立)を入力にqwen_image21_vnccs_posestudioを実行したところ、エラーなく109秒で完了。出力では元の直立ポーズから、Pose Studioのデフォルトポーズ(体育座り風、手を顔の前で組む)へ明確に変化し、かつ顔立ち・髪型・制服・背景(寝室)は入力画像のまま保持されていることを確認(=ポーズ制御が意図通り機能)。今後LoRAを使う他のQwen-Image-2.1系ワークフローでも同じ問題が起こり得る点に注意。"
+      },
       {
         "date": "2026-09-22T05:35:00.000Z",
         "note": "姿勢制御を専用LoRA方式に刷新。X上で話題のVNCCS PoseStudio(AHEKOT/MIUProject制作、r/comfyuiで紹介)を発見・導入。実体はComfyUIノードとして動く3Dポージングツール(MakeHuman系リグ、体型スライダー、ポーズライブラリ、Mixamo FBXインポート、キーフレームアニメーション対応)で、そこで作ったポーズ姿勢画像をQwen-Image-2.1向け専用LoRAと組み合わせてref2iに渡す方式。カスタムノードComfyUI_VNCCS_Utils(github.com/AHEKOT/ComfyUI_VNCCS_Utils)をcustom_nodesにgit clone、requirements.txt(pytorch-lightning等4パッケージ新規)をvenvにインストール。LoRA本体VNCCS_QI2_PoseStudioV1.1.safetensors(159MB、HF:MIUProject/VNCCS_PoseStudio_QI2.1)をmodels/loras/QI2.1/VNCCS/に配置。公式サンプルワークフローも取得し、LoRAパスをV1→V1.1に差し替えてqwen_image21_vnccs_posestudio.jsonとして保存(UNETLoader→LoraLoaderModelOnly→QwenImage21Cache→KSamplerの構成で、既存のint8_convrot量子化unet/qwen3vl_8b_int8_convrot text encoder/vae bf16とそのまま組み合わせ可能と確認)。ワークフロー内のImage Comparer(rgthree)ノード用にrgthree-comfyも導入(requirements.txtは空で追加依存なし)。前回(9/22 02:56)の自前OpenPose骨格画像+プロンプト指示によるpose_ref方式は、骨格の描画自体が手間で自由度も低かったが、今回のPoseStudioは3D UI上で直接ポーズを作れる点で実用性が大きく向上する見込み。ComfyUI本体は現在起動中のため新規カスタムノードの反映(再起動)はユーザーが別途実施予定、実写真での動作確認は未実施。"
