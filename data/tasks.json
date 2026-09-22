@@ -601,8 +601,12 @@
     "tags": [],
     "status": "完了",
     "createdAt": "2026-09-21T04:20:00.000Z",
-    "updatedAt": "2026-09-21T09:05:00.000Z",
+    "updatedAt": "2026-09-22T02:56:00.000Z",
     "history": [
+      {
+        "date": "2026-09-22T02:56:00.000Z",
+        "note": "ポーズ制御(REF2I)を追加検証。X調査でComfyUI公式のQwen-Image InstantX ControlNet-Union(pose/canny/depth/softedge対応、models/controlnetにダウンロードして導入)を発見し、qwen_image21_ref2i.jsonを複製したqwen_image21_ref2i_controlnet_pose.jsonにControlNetLoader→ControlNetApplyAdvanced経由で組み込んで実行したところ、KSampler内部で`ValueError: not enough values to unpack (expected 5, got 4)`が発生し失敗。ComfyUI公式テンプレート一覧(workflow_templates/index.json)を確認したところ、このControlNetは無印\"Qwen-Image\"専用、pose対応の別ControlNet(\"Fun Union\")も\"Qwen-Image 2512\"という別系統向けで、2026-09-20リリースの\"Qwen Image 2.1\"に対応する公式ControlNetテンプレートはまだ存在しないと判明(アーキテクチャ非互換が根本原因と推定)。そのため実運用は代替手段に切替: OpenPose形式の骨格ポーズ図(ボクシングのファイティングポーズ)をcomfyui_controlnet_auxのdraw_bodypose関数で自前生成し、ControlNetを使わずref2iの2枚目参照画像(<image2>)としてそのままプロンプトで指示する方式に変更したところ、実写真画像で意図通りポーズが変わることを確認(ControlNet系ノードは未使用のため削除)。この動作確認済み構成をqwen_image21_ref2i_pose_ref.jsonとして別名保存。ControlNet版ファイルは将来Qwen-Image-2.1対応版が出た際の土台として残置。"
+      },
       {
         "date": "2026-09-21T09:05:00.000Z",
         "note": "さらなる高速化。X投稿で紹介されていたSpectrum(arXiv:2603.01623, CVPR 2026の学習不要サンプリング高速化手法)のComfyUI実装(awdqwdasdg/Comfyui-Spectrum-Qwen2.1)を導入。導入前に全ソースを読み、ネットワーク通信・exec/eval等の危険なパターアがないことを確認済み(リポジトリ説明の「Literal Slop」はAI生成コードという自虐で、実体は正当な論文実装)。QwenImage21CacheとKSamplerの間に設置し、拡散過程の一部ステップをChebyshev多項式フィッティングで予測してスキップする仕組み。実写真解像度・25ステップでの実測でwarmup 5ステップ(約8.2秒/step)後は予測ステップが挟まり最大19it/s、平均4.04秒/stepまで短縮(base比約2倍)、エラーなく完了。既定パラメータのまま良好に機能したためデフォルト値を採用。ワークフローファイル(qwen_image21_ref2i.json)に追加済み。"
